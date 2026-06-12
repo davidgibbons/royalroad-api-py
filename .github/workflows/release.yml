@@ -1,10 +1,10 @@
 name: Release
 
-# Auto-tag and release on version bump. When a push to main (or a manual
-# dispatch) carries a new `__version__`, this workflow creates the matching
-# `v<version>` git tag, builds the wheel + sdist, and attaches them to a fresh
-# GitHub Release. If the tag already exists, it does nothing — so ordinary
-# commits don't release; only a version bump does.
+# Tag and release on manual trigger. Run this from the Actions tab (or via
+# `gh workflow run Release`). It reads `__version__` and, if no matching
+# `v<version>` tag exists yet, creates the tag, builds the wheel + sdist, and
+# attaches them to a fresh GitHub Release. If the tag already exists, it does
+# nothing — so bump `__version__` before running.
 #
 # NOTE: GitHub Packages has no Python (PyPI-style) registry, so the artifacts
 # are published as GitHub Release assets. Install them with, e.g.:
@@ -13,8 +13,6 @@ name: Release
 #   pip install "git+https://github.com/davidgibbons/royalroad-api-py@v0.1.0"
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

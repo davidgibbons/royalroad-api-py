@@ -35,18 +35,18 @@ Runtime deps: `httpx`, `selectolax`, `python-dateutil`.
 ## Releasing
 
 The version is single-sourced from `__version__` in
-`src/royalroad_api/__init__.py` (hatchling reads it dynamically). Releases are
-**bump-driven** — you never tag by hand:
+`src/royalroad_api/__init__.py` (hatchling reads it dynamically). You never tag
+by hand:
 
-1. Bump `__version__` (e.g. `0.1.0` → `0.1.1`).
-2. Commit and push to `main`.
+1. Bump `__version__` (e.g. `0.1.0` → `0.1.1`) and merge to `main`.
+2. Run the `Release` workflow from the **Actions** tab (**Run workflow**), or
+   `gh workflow run Release`.
 
-On that push the `Release` workflow reads `__version__`, and if no `v<version>`
-tag exists yet it: runs the tests, builds the wheel + sdist, `twine check`s
-them, **creates and pushes the `v<version>` tag**, and publishes a GitHub
-Release with the artifacts attached. Commits that don't change the version are a
-no-op, so only a version bump triggers a release. You can also run it on demand
-from the Actions tab (**Run workflow**).
+The workflow reads `__version__`, and if no `v<version>` tag exists yet it: runs
+the tests, builds the wheel + sdist, `twine check`s them, **creates and pushes
+the `v<version>` tag**, and publishes a GitHub Release with the artifacts
+attached. If the tag already exists it's a no-op, so bump the version before
+running.
 
 CI (`ci.yml`) runs the test matrix on every push and PR.
 
