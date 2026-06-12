@@ -9,7 +9,7 @@ them (see ``parsers`` / ``_parsing``).
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from .errors import RoyalError
 from .models import (

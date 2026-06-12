@@ -44,7 +44,13 @@ class FictionsService:
         )
 
     def search(self, query: str, page: int = 1) -> RoyalResponse:
-        return RoyalResponse(parser.parse_search(self._get_list(f"search?{query}", page)))
+        # `title` must be a real query param — folding it into the path (search?<query>)
+        # collides with the page param, so RoyalRoad drops the filter and returns the
+        # popular list.
+        body = _validate_list(
+            self._req.get("/fictions/search", {"title": query, "page": str(page)})
+        )
+        return RoyalResponse(parser.parse_search(body))
 
 
 class AsyncFictionsService:
@@ -74,6 +80,8 @@ class AsyncFictionsService:
         )
 
     async def search(self, query: str, page: int = 1) -> RoyalResponse:
-        return RoyalResponse(
-            parser.parse_search(await self._get_list(f"search?{query}", page))
+        # See sync FictionsService.search — `title` must be a real query param.
+        body = _validate_list(
+            await self._req.get("/fictions/search", {"title": query, "page": str(page)})
         )
+        return RoyalResponse(parser.parse_search(body))
